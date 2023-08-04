@@ -1,0 +1,12 @@
+#!/bin/sh --
+# deps:
+#   pstree from `psmisc`
+#   pidof  from `procps`
+set -ue
+
+alias tree='pstree -tp "$(pidof aslstatus)"'
+case "${1:?}" in
+-l) tree;;
+[0-9]*) kill -USR1 "${1}";;
+*) kill -USR1 "$(tree | sed -n "s/.*{${1}}(\([0-9]\+\))/\1/p")"
+esac

@@ -1,0 +1,11 @@
+--- dmenu.c
++++ dmenu.c
+@@ -661,7 +663,7 @@ setup(void)
+ 	swa.override_redirect = True;
+ 	swa.background_pixel = scheme[SchemeNorm][ColBg].pixel;
+ 	swa.event_mask = ExposureMask | KeyPressMask | VisibilityChangeMask;
+-	win = XCreateWindow(dpy, parentwin, x, y, mw, mh, 0,
++	win = XCreateWindow(dpy, parentwin, x + sp, y + vp, mw - 2 * sp, mh, 0,
+ 	                    CopyFromParent, CopyFromParent, CopyFromParent,
+ 	                    CWOverrideRedirect | CWBackPixel | CWEventMask, &swa);
+ 	XSetClassHint(dpy, win, &ch);

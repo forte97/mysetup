@@ -1,0 +1,190 @@
+diff --git a/config.def.h b/config.def.h
+index c193308f..d4807a8e 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -188,6 +188,29 @@ static char scratchnormbordercolor[]     = "#77547E";
+ static char scratchnormfloatcolor[]      = "#77547E";
+ #endif // RENAMED_SCRATCHPADS_PATCH
+ 
++#if BAR_COLORFULTAGS_PATCH
++static char tag1fgcolor[] = "#f92672";
++static char tag1bgcolor[] = "#272822";
++static char tag2fgcolor[] = "#a6e22e";
++static char tag2bgcolor[] = "#272822";
++static char tag3fgcolor[] = "#f4bf75";
++static char tag3bgcolor[] = "#272822";
++static char tag4fgcolor[] = "#66d9ef";
++static char tag4bgcolor[] = "#272822";
++static char tag5fgcolor[] = "#ae81ff";
++static char tag5bgcolor[] = "#272822";
++static char tag6fgcolor[] = "#f8f8f2";
++static char tag6bgcolor[] = "#272822";
++static char tag7fgcolor[] = "#75715e";
++static char tag7bgcolor[] = "#272822";
++static char tag8fgcolor[] = "#f4bf75";
++static char tag8bgcolor[] = "#272822";
++static char tag9fgcolor[] = "#a1efe4";
++static char tag9bgcolor[] = "#272822";
++static char layoutfgcolor[] = "#ae81ff";
++static char layoutbgcolor[] = "#272822";
++#endif
++
+ #if BAR_FLEXWINTITLE_PATCH
+ static char normTTBbgcolor[]             = "#330000";
+ static char normLTRbgcolor[]             = "#330033";
+@@ -242,6 +265,18 @@ static const unsigned int alphas[][3] = {
+ 	[SchemeScratchSel]  = { OPAQUE, baralpha, borderalpha },
+ 	[SchemeScratchNorm] = { OPAQUE, baralpha, borderalpha },
+ 	#endif // RENAMED_SCRATCHPADS_PATCH
++	#if BAR_COLORFULTAGS_PATCH
++	[SchemeTag1]         = { OPAQUE, baralpha, borderalpha},
++	[SchemeTag2]         = { OPAQUE, baralpha, borderalpha},
++	[SchemeTag3]         = { OPAQUE, baralpha, borderalpha},
++	[SchemeTag4]         = { OPAQUE, baralpha, borderalpha},
++	[SchemeTag5]         = { OPAQUE, baralpha, borderalpha},
++	[SchemeTag6]         = { OPAQUE, baralpha, borderalpha},
++	[SchemeTag7]         = { OPAQUE, baralpha, borderalpha},
++	[SchemeTag8]         = { OPAQUE, baralpha, borderalpha},
++	[SchemeTag9]         = { OPAQUE, baralpha, borderalpha},
++	[SchemeLayout]       = { OPAQUE, baralpha, borderalpha},
++	#endif // BAR_COLORFULTAGS_PATCH
+ 	#if BAR_FLEXWINTITLE_PATCH
+ 	[SchemeFlexActTTB]   = { OPAQUE, baralpha, borderalpha },
+ 	[SchemeFlexActLTR]   = { OPAQUE, baralpha, borderalpha },
+@@ -311,6 +346,18 @@ static char *colors[][ColCount] = {
+ 	[SchemeScratchSel]  = { scratchselfgcolor, scratchselbgcolor, scratchselbordercolor, scratchselfloatcolor },
+ 	[SchemeScratchNorm] = { scratchnormfgcolor, scratchnormbgcolor, scratchnormbordercolor, scratchnormfloatcolor },
+ 	#endif // RENAMED_SCRATCHPADS_PATCH
++	#if BAR_COLORFULTAGS_PATCH
++	[SchemeTag1]         = { tag1fgcolor,      tag1bgcolor,      c000000 },
++	[SchemeTag2]         = { tag2fgcolor,      tag2bgcolor,      c000000 },
++	[SchemeTag3]         = { tag3fgcolor,      tag3bgcolor,	     c000000 },
++	[SchemeTag4]         = { tag4fgcolor,      tag4bgcolor,	     c000000 },
++	[SchemeTag5]         = { tag5fgcolor,      tag5bgcolor,      c000000 },
++	[SchemeTag6]         = { tag6fgcolor,      tag6bgcolor,      c000000 },
++	[SchemeTag7]         = { tag7fgcolor,      tag7bgcolor,      c000000 },
++	[SchemeTag8]         = { tag8fgcolor,      tag8bgcolor,      c000000 },
++	[SchemeTag9]         = { tag9fgcolor,      tag9bgcolor,      c000000 },
++	[SchemeLayout]       = { layoutfgcolor,    layoutbgcolor,    c000000 },
++	#endif // BAR_COLORFULTAGS_PATCH
+ 	#if BAR_FLEXWINTITLE_PATCH
+ 	[SchemeFlexActTTB]   = { titleselfgcolor,  actTTBbgcolor,    actTTBbgcolor,        c000000 },
+ 	[SchemeFlexActLTR]   = { titleselfgcolor,  actLTRbgcolor,    actLTRbgcolor,        c000000 },
+diff --git a/dwm.c b/dwm.c
+index 1c77a159..bbcf3d9e 100644
+--- a/dwm.c
++++ b/dwm.c
+@@ -148,6 +148,18 @@ enum {
+ 	SchemeScratchSel,
+ 	SchemeScratchNorm,
+ 	#endif // RENAMED_SCRATCHPADS_PATCH
++	#if BAR_COLORFULTAGS_PATCH
++	SchemeTag1,
++	SchemeTag2,
++	SchemeTag3,
++	SchemeTag4,
++	SchemeTag5,
++	SchemeTag6,
++	SchemeTag7,
++	SchemeTag8,
++	SchemeTag9,
++	SchemeLayout,
++	#endif // BAR_COLORFULTAGS_PATCH
+ 	#if BAR_FLEXWINTITLE_PATCH
+ 	SchemeFlexActTTB,
+ 	SchemeFlexActLTR,
+@@ -1828,7 +1840,7 @@ void
+ drawbar(Monitor *m)
+ {
+ 	Bar *bar;
+-	
++
+ 	#if !BAR_FLEXWINTITLE_PATCH
+ 	if (m->showbar)
+ 	#endif // BAR_FLEXWINTITLE_PATCH
+diff --git a/patch/bar_ltsymbol.c b/patch/bar_ltsymbol.c
+index 1fbd1b84..44d82fe0 100644
+--- a/patch/bar_ltsymbol.c
++++ b/patch/bar_ltsymbol.c
+@@ -7,6 +7,9 @@ width_ltsymbol(Bar *bar, BarArg *a)
+ int
+ draw_ltsymbol(Bar *bar, BarArg *a)
+ {
++	#if BAR_COLORFULTAGS_PATCH
++	drw_setscheme(drw, scheme[SchemeLayout]);
++	#endif // BAR_COLORFULTAGS_PATCH
+ 	return drw_text(drw, a->x, a->y, a->w, a->h, lrpad / 2, bar->mon->ltsymbol, 0, False);
+ }
+ 
+diff --git a/patch/bar_tags.c b/patch/bar_tags.c
+index 6a420d04..9e6ed5ca 100644
+--- a/patch/bar_tags.c
++++ b/patch/bar_tags.c
+@@ -49,11 +49,15 @@ draw_tags(Bar *bar, BarArg *a)
+ 		invert = 0;
+ 		w = TEXTW(icon);
+ 		drw_setscheme(drw, scheme[
++			#if BAR_COLORFULTAGS_PATCH
++			(occ | m->tagset[m->seltags]) & 1 << i
++			? SchemeTag1 + i
++			: SchemeTagsNorm
++			#else
+ 			m->tagset[m->seltags] & 1 << i
+ 			? SchemeTagsSel
+-			: urg & 1 << i
+-			? SchemeUrg
+-			: SchemeTagsNorm
++			: (urg & 1 << i ? SchemeUrg : SchemeTagsNorm)
++			#endif // BAR_COLORFULTAGS_PATCH
+ 		]);
+ 		drw_text(drw, x, a->y, w, a->h, lrpad / 2, icon, invert, False);
+ 		drawindicator(m, NULL, occ, x, a->y, w, a->h, i, -1, invert, tagindicatortype);
+diff --git a/patch/xrdb.c b/patch/xrdb.c
+index aa32854a..fa4175d2 100644
+--- a/patch/xrdb.c
++++ b/patch/xrdb.c
+@@ -58,6 +58,28 @@ loadxrdb()
+ 				XRDB_LOAD_COLOR("dwm.scratchnormbordercolor", scratchnormbordercolor);
+ 				XRDB_LOAD_COLOR("dwm.scratchnormfloatcolor", scratchnormfloatcolor);
+ 				#endif // RENAMED_SCRATCHPADS_PATCH
++				#if BAR_COLORFULTAGS_PATCH
++				XRDB_LOAD_COLOR("dwm.tags.fg1", tag1fgcolor);
++				XRDB_LOAD_COLOR("dwm.tags.bg1", tag1bgcolor);
++				XRDB_LOAD_COLOR("dwm.tags.fg2", tag2fgcolor);
++				XRDB_LOAD_COLOR("dwm.tags.bg2", tag2bgcolor);
++				XRDB_LOAD_COLOR("dwm.tags.fg3", tag3fgcolor);
++				XRDB_LOAD_COLOR("dwm.tags.bg3", tag3bgcolor);
++				XRDB_LOAD_COLOR("dwm.tags.fg4", tag4fgcolor);
++				XRDB_LOAD_COLOR("dwm.tags.bg4", tag4bgcolor);
++				XRDB_LOAD_COLOR("dwm.tags.fg5", tag5fgcolor);
++				XRDB_LOAD_COLOR("dwm.tags.bg5", tag5bgcolor);
++				XRDB_LOAD_COLOR("dwm.tags.fg6", tag6fgcolor);
++				XRDB_LOAD_COLOR("dwm.tags.bg6", tag6bgcolor);
++				XRDB_LOAD_COLOR("dwm.tags.fg7", tag7fgcolor);
++				XRDB_LOAD_COLOR("dwm.tags.bg7", tag7bgcolor);
++				XRDB_LOAD_COLOR("dwm.tags.fg8", tag8fgcolor);
++				XRDB_LOAD_COLOR("dwm.tags.bg8", tag8bgcolor);
++				XRDB_LOAD_COLOR("dwm.tags.fg9", tag9fgcolor);
++				XRDB_LOAD_COLOR("dwm.tags.bg9", tag9bgcolor);
++				XRDB_LOAD_COLOR("dwm.tags.layoutfg", layoutfgcolor);
++				XRDB_LOAD_COLOR("dwm.tags.layoutbg", layoutbgcolor);
++				#endif // BAR_COLORFULTAGS_PATCH
+ 				#if BAR_FLEXWINTITLE_PATCH
+ 				XRDB_LOAD_COLOR("dwm.normTTBbgcolor", normTTBbgcolor);
+ 				XRDB_LOAD_COLOR("dwm.normLTRbgcolor", normLTRbgcolor);
+diff --git a/patches.def.h b/patches.def.h
+index eec95f9f..7ad55cb3 100644
+--- a/patches.def.h
++++ b/patches.def.h
+@@ -307,6 +307,11 @@
+  */
+ #define BAR_COLOR_EMOJI_PATCH 0
+ 
++/* Allow configuration of colors for each tag. Looks good with the underline patch.
++ * https://github.com/fitrh/dwm/issues/1
++ */
++#define BAR_COLORFULTAGS_PATCH 0
++
+ /* Updates the position of dmenu to match that of the bar. I.e. if topbar is 0 then dmenu
+  * will appear at the bottom and if 1 then dmenu will appear at the top.
+  * https://dwm.suckless.org/patches/dmenumatchtop

@@ -37,14 +37,14 @@ static struct arg_t args[] = {
 { cpu_perc,		"^C0^^B2^  %s%% ",	NULL,		 1 _SEC,	END },
 //{ load_avg,		"-[%s]",	NULL,		 3 _SEC,	END },
 { ram_used,		"^C0^^B4^ 󰆼 %sB ", 	NULL,		 5 _SEC,	END },
-{ run_command,		"^C0^^B5^ 󰕾 %s%% ",	"pamixer --get-volume", 	ONCE, 	END },
 { netspeed_rx,		"^C0^^B8^  %sB/s",	"enp5s0",	2 _SEC,		END	},
-{ netspeed_tx,		"^C0^^B8^  %sB/s ",	"enp5s0",	2 _SEC,		END	},
+{ netspeed_tx,		"^C0^^B8^  %sB/s ^C0^^B0^ ",	"enp5s0",	2 _SEC,		END	},
 //{ vol_perc,		"^C0^^B5^ 󰕾 %s ",	NULL,		 0,		END },//
 //{ wifi_essid,		"-[直 \"%s\"",	IFC,		 2 _SEC,	END },
 //{ wifi_perc,		" %3s%%]",	IFC,		 2 _SEC,	END },
 //{ battery_state,	"-[%s",		"BAT0",		 2 _SEC,	END },
 //{ battery_perc,		" %3s%%]",	"BAT0",		 1 _MIN,	END },
+{ run_command,		"^C0^^B5^ 󰕾 %s%% ",	"pamixer --get-volume", 	ONCE, 	END },
 { datetime,		"^C0^^B6^ 󰥔 %s ",	"%H:%M",	 	 1 _SEC,		END },
 { datetime,		"^C0^^B7^  %s ",	"%d/%m/%Y",	 1 _MIN,		END },
 #if USE_X && USE_XKB

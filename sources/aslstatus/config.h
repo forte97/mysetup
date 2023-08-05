@@ -38,6 +38,8 @@ static struct arg_t args[] = {
 //{ load_avg,		"-[%s]",	NULL,		 3 _SEC,	END },
 { ram_used,		"^C0^^B4^ 󰆼 %sB ", 	NULL,		 5 _SEC,	END },
 { run_command,		"^C0^^B5^ 󰕾 %s%% ",	"pamixer --get-volume", 	ONCE, 	END },
+{ netspeed_rx,		"^C0^^B1^  %sB/s ",	"enp5s0",	2 _SEC,		END	},
+{ netspeed_tx,		"^C0^^B1^  %sB/s ",	"enp5s0",	2 _SEC,		END	},
 //{ vol_perc,		"^C0^^B5^ 󰕾 %s ",	NULL,		 0,		END },//
 //{ wifi_essid,		"-[直 \"%s\"",	IFC,		 2 _SEC,	END },
 //{ wifi_perc,		" %3s%%]",	IFC,		 2 _SEC,	END },

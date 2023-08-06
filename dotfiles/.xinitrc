@@ -54,17 +54,13 @@ xbindkeys &
 #XRANDR
 xrandr --output DP-1 --mode 1920x1080 --rate 144 &
 
-#ASLSTATUS
+#wait 2 seconds and run aslstatus
 (sleep 2 && aslstatus) & 
 
-#PYWAL
-wal -R &&
-xrdb -merge ~/.cache/wal/colors.Xresources
+#run wp_init and restore wallpaper and colorscheme
+~/.config/wpg/wp_init.sh &&
 
-#PICOM
-picom &
-
-#LOOP
+#automatically restart dwm after quitting
 while true; do
   # Log stderror to a file 
   dwm 2> ~/.dwm.log

@@ -52,7 +52,7 @@ fi
 xbindkeys &
 
 #XRANDR
-xrandr --output DP-1 --mode 1920x1080 --rate 144 &
+xrandr --output DP-1 --mode 1920x1080 --rate 120 &
 
 #wait 2 seconds and run aslstatus
 (sleep 2 && aslstatus) & 
